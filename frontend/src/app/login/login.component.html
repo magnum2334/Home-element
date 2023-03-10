@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <span >Home</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+
+<br><br>
+<h2 class="text-center">Login</h2>
+<section class="text-center" >
+  <mat-card>
+    <form [formGroup]="login" (ngSubmit)="submit()">
+      <mat-form-field appearance="fill" class="example-full-width  ">
+        <input  placeholder="Ex. pat@example.com"  formControlName="email"type="email" id="email" matInput>
+      </mat-form-field> <br>
+      <mat-form-field appearance="fill" class="example-full-width  ">
+        <input  placeholder="*******" formControlName="password" id="password"  type="password" matInput>
+      </mat-form-field> <br>
+      <button mat-fab  color="primary" aria-label="Example icon button with a heart icon">
+        Login
+      </button><br>
+    </form>
+  </mat-card>
+</section>
