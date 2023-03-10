@@ -1,41 +1,10 @@
-<mat-toolbar color="primary">
-  <span >Home</span>
-  <span class="example-spacer"></span>
-
-  <button (click)="register()"mat-button class="mx-2" >
-    Registrarse
+<h1 class="text-center my-3">carrito de compras <br>
+    <div class="example-button-container">
+  <button mat-flat-button color="primary" aria-label="Example icon button with a home icon">
+   comprar <mat-icon  >credit_card</mat-icon>
   </button>
-  <button  (click)="login()"mat-button class="mx-2" >
-    Login
-  </button>
-  <button (click)="logoutJwt()"mat-button class="mx-2" >
-    Logout
-  </button>
-  <button (click)="card()" mat-icon-button>
-    
-    <mat-icon [matBadge]="cartCounts()" matBadgeOverlap="false" class="demo-section"matBadgeColor="accent" >shopping_cart</mat-icon>
-  </button>
-
-</mat-toolbar>
-
-<br>
-<br>
-<div class="container">
-  <div class="row">
-    <div class="col-12 text-center">
-      <h3>Buscar Por Code : </h3>
-      <form [formGroup]="search" class="example-form">
-        <mat-form-field class="example-full-width mx-4">
-          <mat-label>Code</mat-label>
-          <input matInput type="text" formControlName="code" (change)="filterProduc()">
-        </mat-form-field>
-        <br><br>
-      </form>
-    </div>
   </div>
-</div>
-
-<h1 class="text-center my-3">Productos disponibles  en la tienda</h1>
+ </h1>
 <div class="mat-elevation-z8 mx-4">
   <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
     <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -63,9 +32,6 @@
           </div>
           <div class="example-element-description text-center justify-content-center">
             <br>
-            <button (click)="addCart(element)" style="position: relative; left: 60px;" class="mx-5" mat-fab color="primary" >
-              añadir
-            </button><br>
             <span style="position: relative; left: 60px;" class="example-element-description-attribution"> --stocks disponibles : ({{ element.stock}}) </span>
           </div>
         </div>
@@ -85,6 +51,3 @@
                  aria-label="Select page of periodic elements">
   </mat-paginator>
 </div>
-
-
-

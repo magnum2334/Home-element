@@ -15,7 +15,7 @@ class ProductController extends Controller
 
     public function findByCode($code)
     {
-        $product = Product::where('code', $code)->first();
+        $product = Product::where('code', $code)->get();
 
         if ($product) {
             return response()->json($product, 200);

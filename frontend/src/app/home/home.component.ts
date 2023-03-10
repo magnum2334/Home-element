@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LoginService } from '../services/login.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { ProductService } from './../services/product.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface productsElement {
   id:number
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
   data_dynamic: any = []
   dataSource = new MatTableDataSource<productsElement>(this.data_dynamic)
   token = localStorage.getItem('aut')
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   products = [{
     'title':'title',
     'stock':'stock',
@@ -45,13 +47,15 @@ export class HomeComponent implements OnInit {
     'code':'code',
     'price':'price',
   }]
+  cartCount = 0;
+  search = new FormGroup({
+    code : new FormControl('', Validators.required),
+  })
+  productsCart: any = [];
+  constructor(public dialog: MatDialog, private router:Router, private loginService:LoginService, private productService:ProductService, private _snackBar: MatSnackBar ) { }
 
-  constructor(public dialog: MatDialog, private router:Router, private loginService:LoginService, private productService:ProductService ) { }
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
   logoutJwt(){
@@ -63,7 +67,9 @@ export class HomeComponent implements OnInit {
     localStorage.clear()
     this.router.navigate(['/login']);
   }
-
+  cartCounts(): any{
+   return this.productService.CountProductsCard()
+  }
   login(){
     this.router.navigate(['login'])
   }
@@ -71,12 +77,39 @@ export class HomeComponent implements OnInit {
   register(){
     this.router.navigate(['register'])
   }
+  card(){
+    this.router.navigate(['shopping-cart'])
+  }
+  filterProduc(): void {
+    this.productService.findProduct(this.search.value.code).subscribe((response:any ) => {
+      let res = response
+      this.dataSource = new MatTableDataSource<productsElement>([res])
+      this.dataSource.paginator = this.paginator
 
+      if (res.hasOwnProperty('products') ) {
+      let res = response
+      this.data_dynamic = Object.values(res)
+      this.dataSource = new MatTableDataSource<productsElement>(this.data_dynamic[0])
+      this.dataSource.paginator = this.paginator
+      }else {
+        let res = response
+        this.dataSource = new MatTableDataSource<productsElement>([res[0]])
+        this.dataSource.paginator = this.paginator
+      }
+    })
+
+  }
+  addCart(element:any){
+    this.productService.addProducto(element)
+    this.cartCount++;
+    console.log( this.productService.getItems())
+  }
   ngOnInit(): void {
     this.productService.findAllProducts().subscribe((response:any ) => {
       let res = response
       this.data_dynamic = Object.values(res)
       this.dataSource = new MatTableDataSource<productsElement>(this.data_dynamic[0])
+      this.dataSource.paginator = this.paginator
     })
   }
 

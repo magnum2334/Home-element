@@ -22,7 +22,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('products', 'index');
-    Route::get('products/{code}', 'findByCode')->middleware('jwt.auth');
+    Route::get('products/{code}', 'findByCode');
 });
 
 Route::controller(OrderController::class)->group(function () {
